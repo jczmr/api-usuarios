@@ -38,7 +38,6 @@ o
 Para probar la API se puede hacer uso de soap ui usando el siguiente archivo en la carpeta docs:
 ```text
 REST-demo-falabella-soapui-project.xml
-REST-demo-falabella-soapui-project.xml
 ```
 
 ## Se encontraron las siguientes consideraciones.
