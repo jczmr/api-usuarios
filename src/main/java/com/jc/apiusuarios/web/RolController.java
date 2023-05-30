@@ -1,5 +1,6 @@
 package com.jc.apiusuarios.web;
 
+import com.jc.apiusuarios.exception.ResourceNotFoundException;
 import com.jc.apiusuarios.service.IRolService;
 import com.jc.apiusuarios.web.dto.RolDto;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,14 @@ public class RolController {
 
     @GetMapping("{id}")
     public RolDto getRol(@PathVariable Integer id) {
-        return rolService.getRolById(id);
+
+        try {
+            RolDto rolDto = rolService.getRolById(id);
+            return rolDto;
+
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Rol not exist with id :" + id);
+        }
     }
 
     @PostMapping
@@ -33,9 +41,15 @@ public class RolController {
 
     @PutMapping("{id}")
     public RolDto updateRol(@PathVariable Integer id, @RequestBody RolDto rol) {
-        RolDto dto = rolService.getRolById(id);
-        dto.setRoleName(rol.getRoleName());
-        return rolService.updateRol(rol);
+
+        try {
+            RolDto dto = rolService.getRolById(id);
+            dto.setRoleName(rol.getRoleName());
+            return rolService.updateRol(rol);
+
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Rol not exist with id :" + id);
+        }
     }
 
     @DeleteMapping("{id}")

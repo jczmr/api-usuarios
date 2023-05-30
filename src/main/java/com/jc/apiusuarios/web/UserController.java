@@ -1,5 +1,6 @@
 package com.jc.apiusuarios.web;
 
+import com.jc.apiusuarios.exception.ResourceNotFoundException;
 import com.jc.apiusuarios.mapper.AutoUserMapper;
 import com.jc.apiusuarios.service.IUserService;
 import com.jc.apiusuarios.web.dto.UserDto;
@@ -27,7 +28,13 @@ public class UserController {
 
     @GetMapping("{id}")
     public UserDto getUser(@PathVariable Integer id) {
-        return userService.getUserById(id);
+
+        try {
+            return userService.getUserById(id);
+
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("User not exist with id :" + id);
+        }
     }
 
     @PostMapping
@@ -37,14 +44,20 @@ public class UserController {
 
     @PutMapping("{id}")
     public UserDto updateUser(@PathVariable Integer id, @RequestBody UserDto user) {
-        UserDto dto = userService.getUserById(id);
-        dto.setUsername(user.getUsername());
-        dto.setName(user.getName());
-        dto.setLastName(user.getLastName());
-        dto.setDateOfBirth(user.getDateOfBirth());
-        dto.setAge(user.getAge());
-        dto.setEmail(user.getEmail());
-        return userService.updateUser(dto);
+        try {
+
+            UserDto dto = userService.getUserById(id);
+            dto.setUsername(user.getUsername());
+            dto.setName(user.getName());
+            dto.setLastName(user.getLastName());
+            dto.setDateOfBirth(user.getDateOfBirth());
+            dto.setAge(user.getAge());
+            dto.setEmail(user.getEmail());
+            return userService.updateUser(dto);
+
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("User not exist with id :" + id);
+        }
     }
 
     @DeleteMapping("{id}")
